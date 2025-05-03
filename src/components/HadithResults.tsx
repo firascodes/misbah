@@ -6,11 +6,12 @@ import { Info } from "lucide-react";
 
 interface HadithResult {
   id: number;
-  arabic_text: string;
-  english_translation: string;
+  text_ar: string; // Renamed 
+  text_en: string; // Renamed 
   reference_number: string;
-  source_book: string;
+  source: string; // Renamed 
   chapter?: string;
+  chapter_no?: number; // Added 
   narrator?: string;
   grade?: string;
 }
