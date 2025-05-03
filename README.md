@@ -2,7 +2,7 @@
 
 ![Misbah Logo](./public/misbah-logo-dark.svg)
 
-A web application for searching and viewing Hadiths.
+AI-powered semantic search engine for finding Hadiths from Sahih al-Bukhari and Sahih Muslim.
 
 ## Getting Started
 
