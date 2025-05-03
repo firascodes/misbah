@@ -1,8 +1,10 @@
+<img src="./public/misbah-logo-dark.svg" alt="Misbah Logo" width="300"/>
+
 # Misbah
 
-![Misbah Logo](./public/misbah-logo-dark.svg)
+## Overview
 
-AI-powered semantic search engine for finding Hadiths from Sahih al-Bukhari and Sahih Muslim.
+Misbah is a web application designed for searching and exploring a collection of Hadiths. It provides a user-friendly interface to query the database and view relevant Hadith texts.
 
 ## Getting Started
 
