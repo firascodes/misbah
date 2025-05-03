@@ -1,10 +1,11 @@
 // PresetButtons.tsx
 import { Button } from "./ui/button";
+import { HadithResult } from "./SearchBar"; // Assuming HadithResult is exported from SearchBar or defined elsewhere
 
 interface PresetButtonsProps {
   showPresetButtons: boolean;
   query: string;
-  results: any; // Adjust the 'any' type to the correct type of your results
+  results: HadithResult[] | null; // Use the specific type instead of any
   onPresetClick: (topic: string) => void;
 }
 

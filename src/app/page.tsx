@@ -9,7 +9,7 @@ export default function Home() {
   const [displayText, setDisplayText] = useState("");
   const [phraseIndex, setPhraseIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [typingSpeed, setTypingSpeed] = useState(100);
+  const [typingSpeed] = useState(100);
 
   const { isHistoryPaneOpen, toggleHistoryPane } = useHistoryPane(); // Use context state and functions
   const [currentSearchQuery, setCurrentSearchQuery] = useState("");

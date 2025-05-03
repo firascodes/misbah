@@ -8,20 +8,22 @@ import { HadithResults } from "./HadithResults";
 import { PresetButtons } from "./PresetButtons";
 import { SupabaseContext } from "@/app/providers"; // Import Supabase context
 
-interface HadithResult {
-  id: number;
-  arabic_text: string;
-  english_translation: string;
-  reference_number: string;
-  source_book: string;
+// Define the Speech Recognition interface and related event types
+interface SpeechRecognitionEvent extends Event {
+  readonly resultIndex: number;
+  readonly results: SpeechRecognitionResultList;
 }
 
-// Define the Speech Recognition interface
+interface SpeechRecognitionErrorEvent extends Event {
+  readonly error: string;
+  readonly message: string;
+}
+
 interface SpeechRecognition extends EventTarget {
   start: () => void;
   stop: () => void;
-  onresult: (event: any) => void;
-  onerror: (event: any) => void;
+  onresult: (event: SpeechRecognitionEvent) => void; // Use specific event type
+  onerror: (event: SpeechRecognitionErrorEvent) => void; // Use specific event type
   onend: () => void;
   continuous: boolean;
   interimResults: boolean;
@@ -29,8 +31,22 @@ interface SpeechRecognition extends EventTarget {
 }
 
 // Declare the global SpeechRecognition constructors
+interface SpeechRecognitionWindow extends Window {
+  SpeechRecognition?: SpeechRecognitionConstructor;
+  webkitSpeechRecognition?: SpeechRecognitionConstructor;
+}
+
 interface SpeechRecognitionConstructor {
   new (): SpeechRecognition;
+}
+
+// Export HadithResult type if it's used in PresetButtons
+export interface HadithResult {
+  id: number;
+  arabic_text: string;
+  english_translation: string;
+  reference_number: string;
+  source_book: string;
 }
 
 // Add props for external search trigger and callback
@@ -141,22 +157,23 @@ export default function SearchBar({ triggerSearchQuery, onSearchPerformed }: Sea
     // Check if speech recognition is supported
     if (typeof window === 'undefined') return;
 
-    const SpeechRecognition = (
-      window.SpeechRecognition || 
-      (window as any).webkitSpeechRecognition
-    ) as SpeechRecognitionConstructor | undefined;
+    // Use a type assertion for the window object
+    const SpeechRecognitionAPI = (
+      (window as SpeechRecognitionWindow).SpeechRecognition || 
+      (window as SpeechRecognitionWindow).webkitSpeechRecognition
+    );
     
-    if (!SpeechRecognition) {
+    if (!SpeechRecognitionAPI) {
       setError("Your browser doesn't support speech recognition. Please try Chrome or Edge.");
       return;
     }
 
-    recognitionRef.current = new SpeechRecognition();
+    recognitionRef.current = new SpeechRecognitionAPI();
     recognitionRef.current.continuous = false;
     recognitionRef.current.interimResults = false;
     recognitionRef.current.lang = 'en-US'; // Set language; can be made configurable
 
-    recognitionRef.current.onresult = (event) => {
+    recognitionRef.current.onresult = (event: SpeechRecognitionEvent) => { // Use specific event type
       const transcript = event.results[0][0].transcript;
       setQuery(transcript);
       // Auto search when voice input is complete
@@ -165,10 +182,10 @@ export default function SearchBar({ triggerSearchQuery, onSearchPerformed }: Sea
       performSearch(transcript);
     };
 
-    recognitionRef.current.onerror = (event) => {
-      console.error('Speech recognition error', event);
+    recognitionRef.current.onerror = (event: SpeechRecognitionErrorEvent) => { // Use specific event type
+      console.error('Speech recognition error', event.error, event.message);
       setIsListening(false);
-      setError("Speech recognition error. Please try again.");
+      setError(`Speech recognition error: ${event.error}. Please try again.`);
     };
 
     recognitionRef.current.onend = () => {
