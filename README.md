@@ -1,6 +1,6 @@
 <img src="./public/misbah-logo-dark.svg" alt="Misbah Logo" width="300"/>
 
-## Overview
+## Overview!
 
 Misbah is a web application designed for searching and exploring a collection of Hadiths. It provides a user-friendly interface to query the database and view relevant Hadith texts.
 
