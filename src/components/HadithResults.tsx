@@ -3,18 +3,15 @@
 import { HadithCard } from "@/components/HadithCard";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Info } from "lucide-react";
+import { Tables } from "@/lib/database.types"; // Import Tables type
 
-interface HadithResult {
-  id: number;
-  text_ar: string; // Renamed 
-  text_en: string; // Renamed 
-  reference_number: string;
-  source: string; // Renamed 
-  chapter?: string;
-  chapter_no?: number; // Added 
-  narrator?: string;
-  grade?: string;
-}
+// Export the type so it can be imported elsewhere
+export type HadithResult = Pick<
+  Tables<'hadiths'>,
+  'id' | 'text_ar' | 'text_en' | 'source' | 'chapter' | 'chapter_no' | 'hadith_no' | 'hadith_id'
+> & {
+  reference_number?: string; // Keep optional based on API response
+};
 
 interface HadithResultsProps {
   results: HadithResult[] | null;

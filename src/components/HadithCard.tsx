@@ -18,10 +18,10 @@ interface HadithCardProps {
     id: number;
     text_ar: string;
     text_en: string;
-    reference_number: string;
+    reference_number?: string; // Make optional
     source: string;
-    chapter?: string;
-    chapter_no?: number;
+    chapter?: string | null; // Allow null
+    chapter_no?: number | null; // Allow null
     narrator?: string;
     grade?: string;
   };

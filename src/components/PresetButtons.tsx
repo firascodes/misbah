@@ -1,6 +1,7 @@
 // PresetButtons.tsx
 import { Button } from "./ui/button";
-import { HadithResult } from "./SearchBar"; // Assuming HadithResult is exported from SearchBar or defined elsewhere
+// Import HadithResult from HadithResults.tsx instead of SearchBar.tsx
+import { type HadithResult } from "./HadithResults";
 
 interface PresetButtonsProps {
   showPresetButtons: boolean;

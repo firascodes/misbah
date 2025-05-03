@@ -4,7 +4,8 @@ import { useState, useRef, useEffect, useContext } from "react"; // Import useEf
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Mic, MicOff, Search, X } from "lucide-react";
-import { HadithResults } from "./HadithResults";
+// Import the type from HadithResults instead of defining it locally
+import { HadithResults, type HadithResult as HadithResultType } from "./HadithResults"; 
 import { PresetButtons } from "./PresetButtons";
 import { SupabaseContext } from "@/app/providers"; // Import Supabase context
 
@@ -40,15 +41,6 @@ interface SpeechRecognitionConstructor {
   new (): SpeechRecognition;
 }
 
-// Export HadithResult type if it's used in PresetButtons
-export interface HadithResult {
-  id: number;
-  arabic_text: string;
-  english_translation: string;
-  reference_number: string;
-  source_book: string;
-}
-
 // Add props for external search trigger and callback
 interface SearchBarProps {
   triggerSearchQuery?: string;
@@ -57,7 +49,8 @@ interface SearchBarProps {
 
 export default function SearchBar({ triggerSearchQuery, onSearchPerformed }: SearchBarProps) {
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState<HadithResult[] | null>(null);
+  // Use the imported HadithResultType
+  const [results, setResults] = useState<HadithResultType[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isListening, setIsListening] = useState(false);
@@ -126,7 +119,9 @@ export default function SearchBar({ triggerSearchQuery, onSearchPerformed }: Sea
         throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
       }
 
-      const data: HadithResult[] = await response.json();
+      // Ensure the fetched data is cast or handled as HadithResultType if necessary,
+      // although fetch returns `any` by default, TypeScript should infer correctly here.
+      const data: HadithResultType[] = await response.json();
       setResults(data);
 
       // Save history AFTER a successful search
