@@ -203,14 +203,25 @@ export default function SearchBar({ triggerSearchQuery, onSearchPerformed }: Sea
     <div className="w-full max-w-7xl">
       <div className="w-full max-w-2xl mx-auto">
         <form onSubmit={handleSubmit} className="flex items-center w-full space-x-2 h-12 mb-4">
-          <div className="relative flex-grow">
+          <div className="relative flex-grow h-full">
             <Input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search for Hadiths..."
-              className="w-full px-6 py-4 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full h-full px-4 py-2 pr-10 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               disabled={isLoading || isListening}
             />
+            {query && !isLoading && !isListening && (
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                className="absolute right-2 top-1/2 -translate-y-1/2 h-7 w-7 text-muted-foreground hover:bg-transparent"
+                onClick={handleClear}
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            )}
             {isListening && (
               <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
                 <div className="flex items-center justify-center h-4 w-4">
@@ -223,17 +234,17 @@ export default function SearchBar({ triggerSearchQuery, onSearchPerformed }: Sea
           <Button 
             type="submit" 
             variant="default" 
-            disabled={isLoading || isListening}
-            className="flex items-center gap-2"
+            disabled={isLoading || isListening || !query.trim()}
+            className="flex items-center gap-2 px-3 sm:px-4 h-full"
           >
             {isLoading ? (
               <>
-                <span>Searching</span>
+                <span>Searching...</span>
               </>
             ) : (
               <>
                 <Search className="h-4 w-4" />
-                <span>Search</span>
+                <span className="hidden sm-inline">Search</span>
               </>
             )}
           </Button>
@@ -242,34 +253,21 @@ export default function SearchBar({ triggerSearchQuery, onSearchPerformed }: Sea
             type="button" 
             variant={isListening ? "destructive" : "outline"}
             onClick={toggleListening}
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 px-3 sm:px-4 h-full"
             disabled={isLoading}
           >
             {isListening ? (
               <>
                 <MicOff className="h-4 w-4" />
-                <span>Stop</span>
+                <span className="hidden sm:inline">Stop</span>
               </>
             ) : (
               <>
                 <Mic className="h-4 w-4" />
-                <span>Voice</span>
+                <span className="hidden sm:inline">Voice</span>
               </>
             )}
           </Button>
-
-          {results && (
-            <Button 
-              type="button" 
-              variant="outline" 
-              onClick={handleClear}
-              className="flex items-center gap-2"
-              disabled={isLoading || isListening || (!query && !results)}
-            >
-              <X className="h-4 w-4" />
-              <span>Clear</span>
-            </Button>
-          )}
         </form>
 
       </div>

@@ -19,6 +19,7 @@ module.exports = {
       },
       fontFamily: {
         sans: ['var(--font-poppins)', 'sans-serif'],
+        arabic: ['var(--font-noto-sans-arabic)'],
       },
     },
   },

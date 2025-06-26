@@ -68,7 +68,7 @@ export default function Home() {
   return (
     <main className="flex flex-col items-center justify-center px-4 py-8 space-y-10 relative">
       <div className="flex flex-col items-center space-y-4">
-        <h2 className="text-3xl font-semibold text-center max-w-xl h-12">
+        <h2 className="text-2xl sm:text-3xl font-semibold text-center max-w-xl h-16 sm:h-12">
         Looking For A {displayText}
           <span className="animate-blink">|</span>
         </h2>

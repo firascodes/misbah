@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { Poppins } from 'next/font/google';
+import { Noto_Sans_Arabic } from 'next/font/google';
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import "./globals.css";
 import SupabaseProvider from './providers';
@@ -19,7 +19,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const poppins = Poppins({ subsets: ['latin'], weight: ['400','700'], variable: '--font-poppins' });
+const notoSansArabic = Noto_Sans_Arabic({ subsets: ['arabic'], weight: ['400', '700'], variable: '--font-noto-sans-arabic' });
 
 export const metadata: Metadata = {
   title: "Misbah - Hadith Finder",
@@ -33,7 +33,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} antialiased`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} ${notoSansArabic.variable} antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -59,9 +59,9 @@ export default function RootLayout({
                 className=" hidden dark:block" // Hide by default, show in dark mode
               />
               </div>
-              <div className="flex items-center space-x-4"> 
-                <ModeToggle /> 
+              <div className="flex items-center space-x-2"> 
                 <AuthButton /> 
+                <ModeToggle /> 
               </div>
             </header>
             {children}

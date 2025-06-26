@@ -124,7 +124,8 @@ export default function AuthButton() {
   return (
     <Button onClick={handleSignIn} variant="outline">
       <GoogleLogo />
-      <span className="ml-2">Sign in with Google</span>
+      <span className="ml-2 hidden sm:inline">Sign in with Google</span>
+      <span className="ml-2 inline sm:hidden">Sign In</span>
     </Button>
   );
 }
