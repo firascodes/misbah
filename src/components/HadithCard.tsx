@@ -100,7 +100,7 @@ export function HadithCard({ hadith }: HadithCardProps) {
 
       <CardContent className="space-y-4">
         <Tabs defaultValue="english" className="w-full">
-          <TabsList className="grid mx-auto w-full sm:w-1/3 grid-cols-2">
+          <TabsList className="grid mx-auto w-1/3 grid-cols-2">
             <TabsTrigger value="english">English</TabsTrigger>
             <TabsTrigger value="arabic">Arabic</TabsTrigger>
           </TabsList>
