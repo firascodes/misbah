@@ -1,6 +1,6 @@
 "use client";
 import React, { createContext, useState, useEffect, ReactNode } from "react";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { createClient } from "@/utils/supabase/client";
 import { Session, SupabaseClient } from "@supabase/supabase-js";
 import { Database } from "@/lib/database.types"; // Ensure this path is correct
 import { HistoryPaneProvider } from "@/context/HistoryPaneContext"; // Import the new provider
@@ -12,12 +12,12 @@ interface SupabaseContextType {
 }
 
 export const SupabaseContext = createContext<SupabaseContextType>({
-  supabase: createClientComponentClient<Database>(), // Default client
+  supabase: createClient(), // Default client
   session: null,
 });
 
 export default function Providers({ children }: { children: ReactNode }) {
-  const [supabase] = useState(() => createClientComponentClient<Database>());
+  const [supabase] = useState(() => createClient());
   const [session, setSession] = useState<Session | null>(null);
 
   useEffect(() => {

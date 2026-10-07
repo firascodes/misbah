@@ -1,7 +1,6 @@
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
-import { Database } from '@/lib/database.types'; // Assuming you have types generated
+import { createClient } from '@/utils/supabase/server';
 
 export async function POST(request: Request) {
   const { queryText } = await request.json();
@@ -10,24 +9,18 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Query text is required' }, { status: 400 });
   }
 
-  const cookieStore = cookies();
-  const supabase = createRouteHandlerClient<Database>({ cookies: () => cookieStore });
+  const supabase = createClient(await cookies());
 
-  // Get the current user session
-  const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+  // Get the current user (verified with the Auth server, unlike getSession())
+  const { data: { user }, error: userError } = await supabase.auth.getUser();
 
-  if (sessionError) {
-    console.error('Error getting session:', sessionError);
-    return NextResponse.json({ error: 'Failed to get user session' }, { status: 500 });
-  }
-
-  if (!session) {
+  if (userError || !user) {
     // Only logged-in users can save history, but don't treat it as an error if not logged in.
     // The frontend should ideally prevent calling this if not logged in.
     return NextResponse.json({ message: 'User not logged in, history not saved' }, { status: 200 });
   }
 
-  const userId = session.user.id;
+  const userId = user.id;
 
   // Check for the most recent history entry for this user
   const { data: recentHistory, error: recentHistoryError } = await supabase
