@@ -50,10 +50,13 @@ export default function AuthButton() {
   const { openHistoryPane } = useHistoryPane(); // Get function from context
 
   const handleSignIn = async () => {
+    const redirectUrl = `${window.location.origin}/api/auth/callback`;
+    console.log("Redirect URL:", redirectUrl); // Debug log
+
     await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${window.location.origin}/api/auth/callback`,
+        redirectTo: redirectUrl,
       },
     });
   };
