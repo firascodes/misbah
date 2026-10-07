@@ -51,7 +51,6 @@ export default function AuthButton() {
 
   const handleSignIn = async () => {
     const redirectUrl = `${window.location.origin}/api/auth/callback`;
-    console.log("Redirect URL:", redirectUrl); // Debug log
 
     await supabase.auth.signInWithOAuth({
       provider: "google",
