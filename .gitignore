@@ -42,3 +42,6 @@ yarn-error.log*
 next-env.d.ts
 
 .windsurfrules
+# agent skills (installed locally via `npx skills add`)
+.claude/skills/
+skills-lock.json
