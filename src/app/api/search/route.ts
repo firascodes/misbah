@@ -7,7 +7,13 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY! });
 const RESULTS_PER_PAGE = 5;
 
 export async function POST(request: Request) {
-  const { query, page = 1 } = await request.json(); // Get page, default to 1
+  let body: { query?: unknown; page?: unknown };
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: 'Request body must be valid JSON.' }, { status: 400 });
+  }
+  const { query, page = 1 } = body; // Get page, default to 1
 
   if (typeof query !== 'string' || query.trim() === '') {
     return NextResponse.json({ error: 'Query parameter is required and must be a non-empty string.' }, { status: 400 });
@@ -16,11 +22,21 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Page parameter must be a positive integer.' }, { status: 400 });
   }
 
-  const embeddingRes = await openai.embeddings.create({
-    model: 'text-embedding-ada-002',
-    input: query.trim(), // Trim query
-  });
-  const vector = embeddingRes.data[0].embedding;
+  let vector: number[];
+  try {
+    const embeddingRes = await openai.embeddings.create({
+      model: 'text-embedding-ada-002',
+      input: query.trim(), // Trim query
+    });
+    vector = embeddingRes.data[0].embedding;
+  } catch (err) {
+    console.error('OpenAI embedding error:', err);
+    // Quota, rate-limit and outage errors are on our side, not the user's
+    return NextResponse.json(
+      { error: 'Search is temporarily unavailable. Please try again in a moment.' },
+      { status: 503 }
+    );
+  }
 
   const offset = (page - 1) * RESULTS_PER_PAGE; // Calculate offset
 
