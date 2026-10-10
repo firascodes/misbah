@@ -48,7 +48,7 @@ export function HadithResults({ results, query, isLoading, error }: HadithResult
         <Info className="h-4 w-4" />
         <AlertTitle>No Results</AlertTitle>
         <AlertDescription>
-          No hadiths found matching `{query}`. Please try different keywords or check your spelling.
+          No closely matching hadiths for “{query}”. Try describing the topic in different words.
         </AlertDescription>
       </Alert>
     );
