@@ -74,8 +74,17 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      consume_rate_limit: {
+        Args: { _key: string; _max_hits: number; _window_seconds: number }
+        Returns: boolean
+      }
       match_hadiths: {
-        Args: { _query: string; _limit: number; _offset?: number }
+        Args: {
+          _query: string
+          _limit: number
+          _offset?: number
+          _min_similarity?: number
+        }
         Returns: {
           id: number
           hadith_id: string
@@ -86,7 +95,7 @@ export type Database = {
           chain_indx: string
           text_ar: string
           text_en: string
-          embedding: string
+          similarity: number
         }[]
       }
     }
